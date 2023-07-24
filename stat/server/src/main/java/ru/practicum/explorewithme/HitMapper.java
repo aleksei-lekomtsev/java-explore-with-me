@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface HitMapper {
-    @Mapping(source = "timestamp", target = "created", dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Mapping(source = "timestamp", target = "created")
     Hit toHit(HitDto dto);
 
     @Mapping(source = "created", target = "timestamp")

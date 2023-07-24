@@ -1,10 +1,15 @@
 package ru.practicum.explorewithme;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+
+import static ru.practicum.explorewithme.Util.DATETIME_PATTERN;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +29,7 @@ public class HitDto {
             groups = EndpointHitCreateBasicInfo.class)
     private String ip;
 
-    private String timestamp;
+    @DateTimeFormat(pattern = DATETIME_PATTERN)
+    @JsonFormat(pattern = DATETIME_PATTERN)
+    private LocalDateTime timestamp;
 }
