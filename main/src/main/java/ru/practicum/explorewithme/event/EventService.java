@@ -30,7 +30,8 @@ public interface EventService {
     EventFullDto update(Long eventId, UpdateEventAdminRequest updateEventAdminRequest);
 
     Collection<EventShortDto> findEvents(String text, List<Long> categoriesIds, Boolean paid, LocalDateTime rangeStart,
-                                         LocalDateTime rangeEnd, Boolean onlyAvailable, Sort sort, int from, int size);
+                                         LocalDateTime rangeEnd, Boolean onlyAvailable, Sort sort, int from, int size,
+                                         HttpServletRequest request);
 
     EventFullDto findEvent(Long eventId, HttpServletRequest request);
 

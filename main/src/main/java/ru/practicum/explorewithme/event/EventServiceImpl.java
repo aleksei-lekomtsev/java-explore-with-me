@@ -341,7 +341,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Collection<EventShortDto> findEvents(String text, List<Long> categoriesIds, Boolean paid,
                                                 LocalDateTime rangeStart, LocalDateTime rangeEnd,
-                                                Boolean onlyAvailable, Sort sort, int from, int size) {
+                                                Boolean onlyAvailable, Sort sort, int from, int size, HttpServletRequest request) {
 
         if (rangeEnd != null && rangeStart != null && rangeEnd.isBefore(rangeStart)) {
             throw new BadInputDataException("Range end must be after range start");
@@ -369,6 +369,8 @@ public class EventServiceImpl implements EventService {
                 .offset(from)
                 .limit(size)
                 .fetch();
+
+        createAndSendHit(request);
 
         return events
                 .stream()

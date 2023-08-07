@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.explorewithme.exception.BadInputDataException;
 import ru.practicum.explorewithme.hit.HitDto;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,10 @@ public class StatServiceImpl implements StatService {
     @Transactional(readOnly = true)
     @Override
     public List<ViewStatsDto> findStats(LocalDateTime start, LocalDateTime end, String[] uris, Boolean unique) {
+        if (end != null && start != null && end.isBefore(start)) {
+            throw new BadInputDataException("End date must be after start date");
+        }
+
         if (uris.length == 0) {
             return unique
                     ? repository.viewStatsByStartAndEndAndUnique(start, end)

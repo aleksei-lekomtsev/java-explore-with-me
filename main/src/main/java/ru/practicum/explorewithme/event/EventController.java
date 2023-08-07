@@ -113,8 +113,10 @@ public class EventController {
                                                 @RequestParam(name = "sort", required = false) Sort sort,
                                                 @RequestParam(name = "from", defaultValue = "0")
                                                 @PositiveOrZero int from,
-                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-        return service.findEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+                                                @RequestParam(name = "size", defaultValue = "10") @Positive int size,
+                                                HttpServletRequest request) {
+        return service.findEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size,
+                request);
     }
 
     @GetMapping("/events/{eventId}")
