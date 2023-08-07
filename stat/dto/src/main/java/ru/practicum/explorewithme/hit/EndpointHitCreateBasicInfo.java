@@ -1,4 +1,4 @@
-package ru.practicum.explorewithme;
+package ru.practicum.explorewithme.hit;
 
 public interface EndpointHitCreateBasicInfo {
 }

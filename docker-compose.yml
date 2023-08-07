@@ -1,5 +1,32 @@
 version: '3.8'
 services:
+  mainserver:
+    build: main
+    image: main_server_image
+    container_name: main_server_container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - maindb
+      - statserver
+    environment:
+      - STAT_SERVER_URL=http://statserver:9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://maindb:5432/main
+      - POSTGRES_USER=main
+      - POSTGRES_PASSWORD=main
+
+  maindb:
+    image: postgres:13.7-alpine
+    container_name: maindb
+    ports:
+      - "6542:5432"
+    environment:
+      - DB_NAME=main
+      - POSTGRES_USER=main
+      - POSTGRES_PASSWORD=main
+      - DB_HOST=maindb
+      - DB_PORT=5432
+
   statserver:
     build: stat/server
     image: stat_server_image

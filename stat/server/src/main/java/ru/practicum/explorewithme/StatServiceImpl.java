@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.explorewithme.hit.HitDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class StatServiceImpl implements StatService {
     private final StatRepository repository;
-    private final HitMapper      hitMapper;
+    private final HitMapper hitMapper;
 
     @Transactional
     @Override
