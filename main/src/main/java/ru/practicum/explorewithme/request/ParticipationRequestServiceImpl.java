@@ -54,8 +54,8 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
         Event event = eventRepository.getReferenceById(eventId);
         Optional<Integer> confirmedRequest = participationRequestRepository.findConfirmedRequest(eventId, CONFIRMED);
-        if (confirmedRequest.isPresent() && confirmedRequest.get() != 0 && confirmedRequest.get().
-                equals(event.getParticipantLimit())) {
+        if (confirmedRequest.isPresent() && confirmedRequest.get() != 0 && confirmedRequest.get()
+                .equals(event.getParticipantLimit())) {
             throw new ConflictException("Participation limit");
         }
 

@@ -52,7 +52,7 @@ public class EventServiceImpl implements EventService {
     private final LocationMapper locationMapper;
     private final StatClient statClient;
 
-    private final static String EXPLROREWITHMEMAIN_APP = "explorewithmemain";
+    private static final String EXPLROREWITHMEMAIN_APP = "explorewithmemain";
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -188,8 +188,8 @@ public class EventServiceImpl implements EventService {
 
 
         Optional<Integer> confirmedRequest = requestRepository.findConfirmedRequest(eventId, CONFIRMED);
-        if (confirmedRequest.isPresent() && confirmedRequest.get() != 0 && confirmedRequest.get().
-                equals(eventRepository.getReferenceById(eventId).getParticipantLimit())
+        if (confirmedRequest.isPresent() && confirmedRequest.get() != 0 && confirmedRequest.get()
+                .equals(eventRepository.getReferenceById(eventId).getParticipantLimit())
                 && eventRequestStatusUpdateRequest.getStatus() != REJECTED) {
             throw new ConflictException("Participation limit");
         }
