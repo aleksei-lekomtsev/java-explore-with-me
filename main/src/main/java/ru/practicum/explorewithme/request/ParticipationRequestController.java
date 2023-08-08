@@ -22,7 +22,7 @@ public class ParticipationRequestController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ParticipationRequestDto> get(@PathVariable Long userId) {
+    public Collection<ParticipationRequestDto> findParticipationRequests(@PathVariable Long userId) {
         return service.findParticipationRequests(userId);
     }
 

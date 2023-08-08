@@ -50,7 +50,7 @@ public class EventController {
 
     @GetMapping("/users/{userId}/events/{eventId}")
     @ResponseStatus(HttpStatus.OK)
-    public EventFullDto findEvents(@PathVariable Long userId, @PathVariable Long eventId) {
+    public EventFullDto findEvent(@PathVariable Long userId, @PathVariable Long eventId) {
         return service.findEvent(userId, eventId);
     }
 
@@ -63,15 +63,16 @@ public class EventController {
 
     @GetMapping("/users/{userId}/events/{eventId}/requests")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ParticipationRequestDto> getById(@PathVariable Long userId, @PathVariable Long eventId) {
+    public Collection<ParticipationRequestDto> findEventParticipants(@PathVariable Long userId,
+                                                                     @PathVariable Long eventId) {
         return service.findEventParticipants(userId, eventId);
     }
 
     @PatchMapping("/users/{userId}/events/{eventId}/requests")
     @ResponseStatus(HttpStatus.OK)
-    public EventRequestStatusUpdateResult update(@PathVariable Long userId, @PathVariable Long eventId,
-                                                 @RequestBody EventRequestStatusUpdateRequest
-                                                         eventRequestStatusUpdateRequest) {
+    public EventRequestStatusUpdateResult changeRequestStatus(@PathVariable Long userId, @PathVariable Long eventId,
+                                                              @RequestBody EventRequestStatusUpdateRequest
+                                                                      eventRequestStatusUpdateRequest) {
         return service.changeRequestStatus(userId, eventId, eventRequestStatusUpdateRequest);
     }
 

@@ -15,6 +15,6 @@ public class UpdateCompilationRequest {
 
     private Boolean pinned;
 
-    @Size(max = 50, message = "Size of the title must be lower or equal 50.")
+    @Size(min = 1, max = 50, message = "Size of the title must be lower or equal 50.")
     private String title;
 }

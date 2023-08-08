@@ -26,9 +26,9 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<UserDto> get(@RequestParam(name = "ids", defaultValue = "") Long[] ids,
-                                   @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
-                                   @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
+    public Collection<UserDto> findUsers(@RequestParam(name = "ids", defaultValue = "") Long[] ids,
+                                         @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
+                                         @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
 
         return userService.findUsers(ids, from, size);
     }

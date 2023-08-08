@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithme.event.EventRepository;
 import ru.practicum.explorewithme.exception.EntityNotFoundException;
+import ru.practicum.explorewithme.util.EntityPageRequest;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional(readOnly = true)
     @Override
     public Collection<CompilationDto> findCompilations(Boolean pinned, int from, int size) {
-        PageRequest pageRequest = new CompilationPageRequest(from, size);
+        PageRequest pageRequest = new EntityPageRequest(from, size);
 
         return compilationRepository.findByPinned(pinned, pageRequest)
                 .getContent()
@@ -72,7 +73,8 @@ public class CompilationServiceImpl implements CompilationService {
             compilation.setPinned(updateCompilationRequest.getPinned());
         }
 
-        if (updateCompilationRequest.getTitle() != null) {
+        if (updateCompilationRequest.getTitle() != null && !updateCompilationRequest.getTitle()
+                .equals(compilation.getTitle()) && !updateCompilationRequest.getTitle().isBlank()) {
             compilation.setTitle(updateCompilationRequest.getTitle());
         }
 

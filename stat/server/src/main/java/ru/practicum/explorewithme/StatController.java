@@ -25,7 +25,7 @@ public class StatController {
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createHit(@RequestBody HitDto dto) {
+    public void create(@RequestBody HitDto dto) {
         service.create(dto);
     }
 

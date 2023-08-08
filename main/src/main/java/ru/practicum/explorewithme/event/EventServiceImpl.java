@@ -22,6 +22,7 @@ import ru.practicum.explorewithme.request.ParticipationRequestMapper;
 import ru.practicum.explorewithme.request.ParticipationRequestRepository;
 import ru.practicum.explorewithme.stat.StatClient;
 import ru.practicum.explorewithme.user.UserRepository;
+import ru.practicum.explorewithme.util.EntityPageRequest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -78,7 +79,7 @@ public class EventServiceImpl implements EventService {
     @Transactional(readOnly = true)
     @Override
     public Collection<EventShortDto> findEvents(Long userId, int from, int size) {
-        PageRequest pageRequest = new EventPageRequest(from, size);
+        PageRequest pageRequest = new EntityPageRequest(from, size);
 
         return eventRepository.findByInitiatorId(userId, pageRequest)
                 .getContent()
@@ -118,7 +119,8 @@ public class EventServiceImpl implements EventService {
             throw new ConflictException(String.format("Event with event id: %s is published.", eventId));
         }
 
-        if (updateEventUserRequest.getAnnotation() != null) {
+        if (updateEventUserRequest.getAnnotation() != null && !updateEventUserRequest.getAnnotation()
+                .equals(event.getAnnotation()) && !updateEventUserRequest.getAnnotation().isBlank()) {
             event.setAnnotation(updateEventUserRequest.getAnnotation());
         }
 
@@ -132,7 +134,8 @@ public class EventServiceImpl implements EventService {
             event.setCategory(category);
         }
 
-        if (updateEventUserRequest.getDescription() != null) {
+        if (updateEventUserRequest.getDescription() != null && !updateEventUserRequest.getDescription()
+                .equals(event.getDescription()) && !updateEventUserRequest.getDescription().isBlank()) {
             event.setDescription(updateEventUserRequest.getDescription());
         }
 
@@ -163,7 +166,8 @@ public class EventServiceImpl implements EventService {
             }
         }
 
-        if (updateEventUserRequest.getTitle() != null) {
+        if (updateEventUserRequest.getTitle() != null && !updateEventUserRequest.getTitle()
+                .equals(event.getTitle()) && !updateEventUserRequest.getTitle().isBlank()) {
             event.setTitle(updateEventUserRequest.getTitle());
         }
 
@@ -273,7 +277,8 @@ public class EventServiceImpl implements EventService {
                             String.format("Entity with id=%d doesn't exist.", eventId));
                 });
 
-        if (updateEventAdminRequest.getAnnotation() != null) {
+        if (updateEventAdminRequest.getAnnotation() != null && !updateEventAdminRequest.getAnnotation()
+                .equals(event.getAnnotation()) && !updateEventAdminRequest.getAnnotation().isBlank()) {
             event.setAnnotation(updateEventAdminRequest.getAnnotation());
         }
 
@@ -287,7 +292,8 @@ public class EventServiceImpl implements EventService {
             event.setCategory(category);
         }
 
-        if (updateEventAdminRequest.getDescription() != null) {
+        if (updateEventAdminRequest.getDescription() != null && !updateEventAdminRequest.getDescription()
+                .equals(event.getDescription()) && !updateEventAdminRequest.getDescription().isBlank()) {
             event.setDescription(updateEventAdminRequest.getDescription());
         }
 
@@ -330,7 +336,8 @@ public class EventServiceImpl implements EventService {
             }
         }
 
-        if (updateEventAdminRequest.getTitle() != null) {
+        if (updateEventAdminRequest.getTitle() != null && !updateEventAdminRequest.getTitle()
+                .equals(event.getTitle()) && !updateEventAdminRequest.getTitle().isBlank()) {
             event.setTitle(updateEventAdminRequest.getTitle());
         }
 

@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithme.exception.ConflictException;
+import ru.practicum.explorewithme.util.EntityPageRequest;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public Collection<UserDto> findUsers(Long[] ids, int from, int size) {
-        PageRequest pageRequest = new UserPageRequest(from, size);
+        PageRequest pageRequest = new EntityPageRequest(from, size);
 
         Page<User> page = ids.length == 0
                 ? repository.findAll(pageRequest)

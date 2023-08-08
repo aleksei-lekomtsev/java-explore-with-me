@@ -38,7 +38,7 @@ public class CompilationController {
 
     @GetMapping("/compilations/{compId}")
     @ResponseStatus(HttpStatus.OK)
-    public CompilationDto findCompilations(@PathVariable Long compId) {
+    public CompilationDto findCompilation(@PathVariable Long compId) {
         return service.findCompilation(compId);
     }
 

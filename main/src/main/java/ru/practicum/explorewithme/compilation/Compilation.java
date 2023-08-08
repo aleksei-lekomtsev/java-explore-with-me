@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import ru.practicum.explorewithme.event.Event;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Data
@@ -33,7 +35,10 @@ public class Compilation {
             inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
     private Collection<Event> events;
 
+    @Column(nullable = false)
     private Boolean pinned;
 
+    @Column(unique = true, nullable = false)
+    @Size(min = 1, max = 50)
     private String title;
 }

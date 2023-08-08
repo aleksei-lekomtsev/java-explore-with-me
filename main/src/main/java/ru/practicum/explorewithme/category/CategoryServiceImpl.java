@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithme.event.EventRepository;
 import ru.practicum.explorewithme.exception.ConflictException;
 import ru.practicum.explorewithme.exception.EntityNotFoundException;
+import ru.practicum.explorewithme.util.EntityPageRequest;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     @Override
     public Collection<CategoryDto> findCategories(int from, int size) {
-        PageRequest pageRequest = new CategoryPageRequest(from, size);
+        PageRequest pageRequest = new EntityPageRequest(from, size);
 
         return categoryRepository.findAll(pageRequest)
                 .getContent()

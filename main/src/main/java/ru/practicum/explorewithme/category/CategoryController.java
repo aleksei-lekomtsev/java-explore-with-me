@@ -27,16 +27,15 @@ public class CategoryController {
 
     @GetMapping("/categories")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<CategoryDto> get(
+    public Collection<CategoryDto> findCategories(
             @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
             @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-
         return service.findCategories(from, size);
     }
 
     @GetMapping("/categories/{catId}")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryDto getById(@PathVariable Long catId) {
+    public CategoryDto findById(@PathVariable Long catId) {
         return service.findById(catId);
     }
 
@@ -53,6 +52,13 @@ public class CategoryController {
         return service.update(catId, dto);
     }
 
+    // > Почему NO_CONTENT?
+    // Семен, привет! Если правильно понимаю, то по
+    // спецификации API следует возвращать 204(Категория удалена)
+    // Еще почитал здесь -
+    // https://www.rfc-editor.org/rfc/rfc9110.html#section-9.3.5
+    // > If a DELETE method is successfully applied, the origin server SHOULD send
+    // 204 (No Content) status code if the action has been enacted and no further information is to be supplied
     @DeleteMapping("/admin/categories/{catId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long catId) {
