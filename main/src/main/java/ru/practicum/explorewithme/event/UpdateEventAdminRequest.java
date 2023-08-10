@@ -12,12 +12,7 @@ import java.time.LocalDateTime;
 
 import static ru.practicum.explorewithme.Util.DATETIME_PATTERN;
 
-// > Валидация полей?
-// Вроде по спецификации API те поля, что у меня не отмечены с аннотациями на валидацию - могут быть null:
-// > Данные для изменения информации о событии. Если поле в запросе не указано (равно null)
-// > - значит изменение этих данных не треубется.
-// Смотрю в спецификации в schema UpdateEventAdminRequest
-// А остальные поля вроде были с валидацией...
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

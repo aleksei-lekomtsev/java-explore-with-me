@@ -20,6 +20,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -36,47 +38,59 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
+    @NotBlank
     @Size(min = 20, max = 2000)
     private String annotation;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id")
+    @NotNull
     private Category category;
 
-    @Column(nullable = false)
+    @Column
+    @NotBlank
     @Size(min = 20, max = 7000)
     private String description;
 
-    @Column(name = "event_date", nullable = false)
+    @Column(name = "event_date")
+    @NotNull
     private LocalDateTime eventDate;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "location_id", nullable = false)
+    @JoinColumn(name = "location_id")
+    @NotNull
     private Location location;
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private Boolean paid;
 
-    @Column(name = "participant_limit", nullable = false)
+    @Column(name = "participant_limit")
+    @NotNull
     private Integer participantLimit;
 
-    @Column(name = "request_moderation", nullable = false)
+    @Column(name = "request_moderation")
+    @NotNull
     private Boolean requestModeration;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "state", nullable = false)
+    @Column(name = "state")
+    @NotNull
     private State state;
 
-    @Column(nullable = false)
+    @Column
+    @NotBlank
     @Size(min = 3, max = 120)
     private String title;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "initiator_id", nullable = false)
+    @JoinColumn(name = "initiator_id")
+    @NotNull
     private User initiator;
 
-    @Column(name = "created_on", nullable = false)
+    @Column(name = "created_on")
+    @NotNull
     private LocalDateTime createdOn;
 
     @Column(name = "published_on")

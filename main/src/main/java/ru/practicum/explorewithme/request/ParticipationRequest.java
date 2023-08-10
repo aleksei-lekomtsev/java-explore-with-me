@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 
@@ -30,15 +31,18 @@ public class ParticipationRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private LocalDateTime created;
 
     @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "event_id")
+    @NotNull
     private Event event;
 
     @ManyToOne
-    @JoinColumn(name = "requester_id", nullable = false)
+    @JoinColumn(name = "requester_id")
+    @NotNull
     private User requester;
 
     @Enumerated(EnumType.STRING)

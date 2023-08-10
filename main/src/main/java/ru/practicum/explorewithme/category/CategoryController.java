@@ -52,13 +52,6 @@ public class CategoryController {
         return service.update(catId, dto);
     }
 
-    // > Почему NO_CONTENT?
-    // Семен, привет! Если правильно понимаю, то по
-    // спецификации API следует возвращать 204(Категория удалена)
-    // Еще почитал здесь -
-    // https://www.rfc-editor.org/rfc/rfc9110.html#section-9.3.5
-    // > If a DELETE method is successfully applied, the origin server SHOULD send
-    // 204 (No Content) status code if the action has been enacted and no further information is to be supplied
     @DeleteMapping("/admin/categories/{catId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long catId) {

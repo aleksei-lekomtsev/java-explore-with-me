@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -21,9 +22,11 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private Float lat;
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private Float lon;
 }

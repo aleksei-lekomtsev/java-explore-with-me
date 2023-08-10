@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,14 +26,18 @@ public class Hit {
     private Long id;
 
     @Column
+    @NotBlank
     private String app;
 
     @Column
+    @NotBlank
     private String uri;
 
     @Column
+    @NotBlank
     private String ip;
 
     @Column
+    @NotNull
     private LocalDateTime created;
 }

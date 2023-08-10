@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 
@@ -35,10 +37,12 @@ public class Compilation {
             inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id"))
     private Collection<Event> events;
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private Boolean pinned;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
+    @NotBlank
     @Size(min = 1, max = 50)
     private String title;
 }
