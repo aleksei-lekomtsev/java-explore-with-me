@@ -1,4 +1,4 @@
-package ru.practicum.explorewithme;
+package ru.practicum.explorewithme.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,33 +11,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import javax.validation.constraints.Size;
+
 
 @Data
 @Entity
-@Table(name = "hits")
+@Table(name = "categories")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hit {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     @NotBlank
-    private String app;
-
-    @Column
-    @NotBlank
-    private String uri;
-
-    @Column
-    @NotBlank
-    private String ip;
-
-    @Column
-    @NotNull
-    private LocalDateTime created;
+    @Size(min = 1, max = 50)
+    private String name;
 }

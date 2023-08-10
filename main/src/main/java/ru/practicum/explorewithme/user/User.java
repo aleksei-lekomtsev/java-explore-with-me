@@ -1,4 +1,4 @@
-package ru.practicum.explorewithme;
+package ru.practicum.explorewithme.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,15 +11,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import javax.validation.constraints.Size;
+
 
 @Data
 @Entity
-@Table(name = "hits")
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Hit {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,17 +27,11 @@ public class Hit {
 
     @Column
     @NotBlank
-    private String app;
+    @Size(min = 2, max = 250)
+    private String name;
 
-    @Column
+    @Column(unique = true)
     @NotBlank
-    private String uri;
-
-    @Column
-    @NotBlank
-    private String ip;
-
-    @Column
-    @NotNull
-    private LocalDateTime created;
+    @Size(min = 6, max = 254)
+    private String email;
 }
