@@ -59,7 +59,7 @@ public class EventServiceImpl implements EventService {
     private final EntityManager entityManager;
 
     private void createAndSendHit(HttpServletRequest request) {
-        HitDto hitDto = HitDto
+        final HitDto hitDto = HitDto
                 .builder()
                 .app(EXPLROREWITHMEMAIN_APP)
                 .uri(request.getRequestURI())
@@ -70,8 +70,8 @@ public class EventServiceImpl implements EventService {
     }
 
     private Integer findViews(HttpServletRequest request) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATETIME_PATTERN);
-        ResponseEntity<Object> stats = statClient.findStats(MIN_DATE.format(formatter),
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATETIME_PATTERN);
+        final ResponseEntity<Object> stats = statClient.findStats(MIN_DATE.format(formatter),
                 LocalDateTime.now().format(formatter), request.getRequestURI(), true);
         return (Integer) ((LinkedHashMap) ((ArrayList) stats.getBody()).get(0)).get("hits");
     }
@@ -79,7 +79,7 @@ public class EventServiceImpl implements EventService {
     @Transactional(readOnly = true)
     @Override
     public Collection<EventShortDto> findEvents(Long userId, int from, int size) {
-        PageRequest pageRequest = new EntityPageRequest(from, size);
+        final PageRequest pageRequest = new EntityPageRequest(from, size);
 
         return eventRepository.findByInitiatorId(userId, pageRequest)
                 .getContent()
@@ -91,7 +91,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventFullDto create(Long userId, NewEventDto dto) {
-        Event event = mapper.toEvent(dto);
+        final Event event = mapper.toEvent(dto);
         event.setInitiator(userRepository.getReferenceById(userId));
         return mapper.toEventFullDto(eventRepository.save(event));
     }
@@ -109,7 +109,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventFullDto update(Long userId, Long eventId, UpdateEventUserRequest updateEventUserRequest) {
-        Event event = eventRepository.findById(eventId).orElseThrow(
+        final Event event = eventRepository.findById(eventId).orElseThrow(
                 () -> {
                     throw new EntityNotFoundException(Event.class,
                             String.format("Entity with id=%d doesn't exist.", eventId));
@@ -124,9 +124,9 @@ public class EventServiceImpl implements EventService {
             event.setAnnotation(updateEventUserRequest.getAnnotation());
         }
 
-        Long categoryId = updateEventUserRequest.getCategory();
+        final Long categoryId = updateEventUserRequest.getCategory();
         if (categoryId != null) {
-            Category category = categoryRepository.findById(categoryId).orElseThrow(
+            final Category category = categoryRepository.findById(categoryId).orElseThrow(
                     () -> {
                         throw new EntityNotFoundException(Category.class,
                                 String.format("Entity with id=%d doesn't exist.", categoryId));
@@ -189,16 +189,14 @@ public class EventServiceImpl implements EventService {
     public EventRequestStatusUpdateResult changeRequestStatus(Long userId, Long eventId,
                                                               EventRequestStatusUpdateRequest
                                                                       eventRequestStatusUpdateRequest) {
-
-
-        Optional<Integer> confirmedRequest = requestRepository.findConfirmedRequest(eventId, CONFIRMED);
+        final Optional<Integer> confirmedRequest = requestRepository.findConfirmedRequest(eventId, CONFIRMED);
         if (confirmedRequest.isPresent() && confirmedRequest.get() != 0 && confirmedRequest.get()
                 .equals(eventRepository.getReferenceById(eventId).getParticipantLimit())
                 && eventRequestStatusUpdateRequest.getStatus() != REJECTED) {
             throw new ConflictException("Participation limit");
         }
 
-        List<ParticipationRequest> allById
+        final List<ParticipationRequest> allById
                 = requestRepository.findAllById(eventRequestStatusUpdateRequest.getRequestIds());
 
         if (!allById.isEmpty() && allById.get(0).getStatus() == CONFIRMED
@@ -209,10 +207,10 @@ public class EventServiceImpl implements EventService {
         allById.forEach(participationRequest ->
                 participationRequest.setStatus(eventRequestStatusUpdateRequest.getStatus()));
 
-        List<ParticipationRequestDto> result = allById.stream()
+        final List<ParticipationRequestDto> result = allById.stream()
                 .map(participationRequestMapper::toParticipationRequestDto)
                 .collect(Collectors.toList());
-        EventRequestStatusUpdateResult eventRequestStatusUpdateResult = new EventRequestStatusUpdateResult();
+        final EventRequestStatusUpdateResult eventRequestStatusUpdateResult = new EventRequestStatusUpdateResult();
         switch (eventRequestStatusUpdateRequest.getStatus()) {
             case CONFIRMED:
                 eventRequestStatusUpdateResult.setConfirmedRequests(result);
@@ -228,9 +226,10 @@ public class EventServiceImpl implements EventService {
     @Override
     public Collection<EventFullDto> findEvents(List<Long> usersIds, List<State> states, List<Long> categoriesIds,
                                                LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
-        QEvent event = QEvent.event;
+        final QEvent event = QEvent.event;
 
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        final BooleanBuilder booleanBuilder = new BooleanBuilder();
+
         if (usersIds != null && !usersIds.isEmpty()) {
             booleanBuilder.and(event.initiator.id.in(usersIds));
         }
@@ -247,9 +246,9 @@ public class EventServiceImpl implements EventService {
             booleanBuilder.and(event.eventDate.between(rangeStart, rangeEnd));
         }
 
-        JPAQueryFactory queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);
+        final JPAQueryFactory queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);
 
-        List<Event> events = queryFactory
+        final List<Event> events = queryFactory
                 .selectFrom(event)
                 .where(booleanBuilder)
                 .offset(from)
@@ -271,7 +270,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public EventFullDto update(Long eventId, UpdateEventAdminRequest updateEventAdminRequest) {
-        Event event = eventRepository.findById(eventId).orElseThrow(
+        final Event event = eventRepository.findById(eventId).orElseThrow(
                 () -> {
                     throw new EntityNotFoundException(Event.class,
                             String.format("Entity with id=%d doesn't exist.", eventId));
@@ -282,9 +281,9 @@ public class EventServiceImpl implements EventService {
             event.setAnnotation(updateEventAdminRequest.getAnnotation());
         }
 
-        Long categoryId = updateEventAdminRequest.getCategory();
+        final Long categoryId = updateEventAdminRequest.getCategory();
         if (categoryId != null) {
-            Category category = categoryRepository.findById(categoryId).orElseThrow(
+            final Category category = categoryRepository.findById(categoryId).orElseThrow(
                     () -> {
                         throw new EntityNotFoundException(Category.class,
                                 String.format("Entity with id=%d doesn't exist.", categoryId));
@@ -348,15 +347,15 @@ public class EventServiceImpl implements EventService {
     @Override
     public Collection<EventShortDto> findEvents(String text, List<Long> categoriesIds, Boolean paid,
                                                 LocalDateTime rangeStart, LocalDateTime rangeEnd,
-                                                Boolean onlyAvailable, Sort sort, int from, int size, HttpServletRequest request) {
-
+                                                Boolean onlyAvailable, Sort sort, int from, int size,
+                                                HttpServletRequest request) {
         if (rangeEnd != null && rangeStart != null && rangeEnd.isBefore(rangeStart)) {
             throw new BadInputDataException("Range end must be after range start");
         }
 
-        QEvent event = QEvent.event;
+        final QEvent event = QEvent.event;
 
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        final BooleanBuilder booleanBuilder = new BooleanBuilder();
         if (text != null && !text.isBlank()) {
             booleanBuilder.and(event.annotation.likeIgnoreCase("%" + text + "%"));
         }
@@ -369,8 +368,9 @@ public class EventServiceImpl implements EventService {
             booleanBuilder.and(event.paid.eq(paid));
         }
 
-        JPAQueryFactory queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);
-        List<Event> events = queryFactory
+        final JPAQueryFactory queryFactory = new JPAQueryFactory(JPQLTemplates.DEFAULT, entityManager);
+
+        final List<Event> events = queryFactory
                 .selectFrom(event)
                 .where(booleanBuilder)
                 .offset(from)
@@ -396,11 +396,12 @@ public class EventServiceImpl implements EventService {
     public EventFullDto findEvent(Long eventId, HttpServletRequest request) {
         createAndSendHit(request);
 
-        EventFullDto eventFullDto = mapper.toEventFullDto(eventRepository.findByIdAndState(eventId, State.PUBLISHED).orElseThrow(
-                () -> {
-                    throw new EntityNotFoundException(Event.class,
-                            String.format("Entity with id=%d doesn't exist.", eventId));
-                }));
+        final EventFullDto eventFullDto = mapper
+                .toEventFullDto(eventRepository.findByIdAndState(eventId, State.PUBLISHED).orElseThrow(
+                        () -> {
+                            throw new EntityNotFoundException(Event.class,
+                                    String.format("Entity with id=%d doesn't exist.", eventId));
+                        }));
         eventFullDto.setViews(findViews(request));
 
         return eventFullDto;
