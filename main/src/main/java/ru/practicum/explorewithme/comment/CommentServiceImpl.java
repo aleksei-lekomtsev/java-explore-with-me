@@ -32,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public CommentDto create(Long userId, Long eventId, CommentDto dto) {
-        Comment comment = mapper.toComment(dto);
+        final Comment comment = mapper.toComment(dto);
 
         comment.setUser(userRepository.getReferenceById(userId));
         comment.setEvent(eventRepository.getReferenceById(eventId));
@@ -43,12 +43,18 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public CommentDto update(Long commentId, CommentDto dto) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
+        final Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> {
                     throw new EntityNotFoundException(Comment.class,
                             String.format("Entity with id=%d doesn't exist.", commentId));
                 });
 
+        // > Данной проверки достаточно?
+        // Если я все правильно понимаю, то пока не вижу какая тут может быть еще проверка)
+        // Я получаю CommentDto, в котором есть text поле с NotBlank, Size аннотациями. Если выполнение программы
+        // дошло сюда, значит информация в text прошла проверки на размер, пробелы, not null..
+        // В if-блоке ниже я проверяю, что если текст в обновлении идентичен тексту сохраненного комментария, то
+        // обновлять ничего не нужно...
         if (comment.getText().equals(dto.getText())) {
             return mapper.toCommentDto(comment);
         }
@@ -57,9 +63,16 @@ public class CommentServiceImpl implements CommentService {
         return mapper.toCommentDto(comment);
     }
 
+    // Семен, привет!
+    // > А здесь не нужна проверка, что id существует?
+    // Если комментарий с переданным id не существует, то deleteById метод
+    // пробросит исключение EmptyResultDataAccessException и приложение "упадёт"
+    // Поэтому думаю, что нужно сделать проверку что id существует предварительно
     @Transactional
     @Override
     public void delete(Long id) {
-        commentRepository.deleteById(id);
+        if (commentRepository.existsById(id)) {
+            commentRepository.deleteById(id);
+        }
     }
 }

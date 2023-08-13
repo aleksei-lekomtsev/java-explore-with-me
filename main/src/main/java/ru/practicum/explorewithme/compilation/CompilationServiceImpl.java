@@ -53,7 +53,9 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     @Override
     public void delete(Long id) {
-        compilationRepository.deleteById(id);
+        if (compilationRepository.existsById(id)) {
+            compilationRepository.deleteById(id);
+        }
     }
 
     @Transactional

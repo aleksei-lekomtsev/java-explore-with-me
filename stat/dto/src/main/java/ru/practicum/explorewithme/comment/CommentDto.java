@@ -15,6 +15,6 @@ public class CommentDto {
     private Long id;
 
     @NotBlank(message = "Text must not be null and must contain at least one non-whitespace character.")
-    @Size(max = 100, message = "Size of the name must be lower or equal 50.")
+    @Size(max = 100, message = "Size of the text must be lower or equal 100.")
     private String text;
 }
