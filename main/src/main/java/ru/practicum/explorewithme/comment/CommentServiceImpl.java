@@ -49,12 +49,6 @@ public class CommentServiceImpl implements CommentService {
                             String.format("Entity with id=%d doesn't exist.", commentId));
                 });
 
-        // > Данной проверки достаточно?
-        // Если я все правильно понимаю, то пока не вижу какая тут может быть еще проверка)
-        // Я получаю CommentDto, в котором есть text поле с NotBlank, Size аннотациями. Если выполнение программы
-        // дошло сюда, значит информация в text прошла проверки на размер, пробелы, not null..
-        // В if-блоке ниже я проверяю, что если текст в обновлении идентичен тексту сохраненного комментария, то
-        // обновлять ничего не нужно...
         if (comment.getText().equals(dto.getText())) {
             return mapper.toCommentDto(comment);
         }
@@ -63,11 +57,6 @@ public class CommentServiceImpl implements CommentService {
         return mapper.toCommentDto(comment);
     }
 
-    // Семен, привет!
-    // > А здесь не нужна проверка, что id существует?
-    // Если комментарий с переданным id не существует, то deleteById метод
-    // пробросит исключение EmptyResultDataAccessException и приложение "упадёт"
-    // Поэтому думаю, что нужно сделать проверку что id существует предварительно
     @Transactional
     @Override
     public void delete(Long id) {
