@@ -37,9 +37,9 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public Collection<UserDto> findUsers(Long[] ids, int from, int size) {
-        PageRequest pageRequest = new EntityPageRequest(from, size);
+        final PageRequest pageRequest = new EntityPageRequest(from, size);
 
-        Page<User> page = ids.length == 0
+        final Page<User> page = ids.length == 0
                 ? repository.findAll(pageRequest)
                 : repository.findByIdIn(Arrays.asList(ids), pageRequest);
         return page
@@ -52,6 +52,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        }
     }
 }

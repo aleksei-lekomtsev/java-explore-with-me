@@ -52,14 +52,15 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
             throw new ConflictException("Event must be published first.");
         }
 
-        Event event = eventRepository.getReferenceById(eventId);
-        Optional<Integer> confirmedRequest = participationRequestRepository.findConfirmedRequest(eventId, CONFIRMED);
+        final Event event = eventRepository.getReferenceById(eventId);
+        final Optional<Integer> confirmedRequest = participationRequestRepository
+                .findConfirmedRequest(eventId, CONFIRMED);
         if (confirmedRequest.isPresent() && confirmedRequest.get() != 0 && confirmedRequest.get()
                 .equals(event.getParticipantLimit())) {
             throw new ConflictException("Participation limit");
         }
 
-        ParticipationRequest participationRequest = new ParticipationRequest();
+        final ParticipationRequest participationRequest = new ParticipationRequest();
         participationRequest.setCreated(LocalDateTime.now());
         participationRequest.setRequester(userRepository.getReferenceById(userId));
 
@@ -76,7 +77,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     @Transactional
     @Override
     public ParticipationRequestDto cancelRequest(Long userId, Long requestId) {
-        Optional<ParticipationRequest> byId = participationRequestRepository.findById(requestId);
+        final Optional<ParticipationRequest> byId = participationRequestRepository.findById(requestId);
         if (byId.isPresent()) {
             byId.get().setStatus(ParticipationRequestStatus.CANCELED);
             return mapper.toParticipationRequestDto(byId.get());

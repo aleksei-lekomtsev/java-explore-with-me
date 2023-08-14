@@ -38,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public CategoryDto update(Long catId, NewCategoryDto dto) {
-        Category category = categoryRepository.findById(catId).orElseThrow(
+        final Category category = categoryRepository.findById(catId).orElseThrow(
                 () -> {
                     throw new EntityNotFoundException(Category.class,
                             String.format("Entity with id=%d doesn't exist.", catId));
@@ -59,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     @Override
     public Collection<CategoryDto> findCategories(int from, int size) {
-        PageRequest pageRequest = new EntityPageRequest(from, size);
+        final PageRequest pageRequest = new EntityPageRequest(from, size);
 
         return categoryRepository.findAll(pageRequest)
                 .getContent()

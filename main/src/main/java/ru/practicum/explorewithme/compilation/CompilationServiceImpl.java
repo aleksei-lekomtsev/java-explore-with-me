@@ -21,7 +21,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional(readOnly = true)
     @Override
     public Collection<CompilationDto> findCompilations(Boolean pinned, int from, int size) {
-        PageRequest pageRequest = new EntityPageRequest(from, size);
+        final PageRequest pageRequest = new EntityPageRequest(from, size);
 
         return compilationRepository.findByPinned(pinned, pageRequest)
                 .getContent()
@@ -43,7 +43,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     @Override
     public CompilationDto create(NewCompilationDto dto) {
-        Compilation compilation = mapper.toCompilation(dto);
+        final Compilation compilation = mapper.toCompilation(dto);
         if (dto.getEvents() != null) {
             compilation.setEvents(eventRepository.findAllById(dto.getEvents()));
         }
@@ -53,13 +53,15 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     @Override
     public void delete(Long id) {
-        compilationRepository.deleteById(id);
+        if (compilationRepository.existsById(id)) {
+            compilationRepository.deleteById(id);
+        }
     }
 
     @Transactional
     @Override
     public CompilationDto update(Long compId, UpdateCompilationRequest updateCompilationRequest) {
-        Compilation compilation = compilationRepository.findById(compId).orElseThrow(
+        final Compilation compilation = compilationRepository.findById(compId).orElseThrow(
                 () -> {
                     throw new EntityNotFoundException(Compilation.class,
                             String.format("Entity with id=%d doesn't exist.", compId));
